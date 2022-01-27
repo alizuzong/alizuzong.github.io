@@ -116,10 +116,10 @@
         let ckey = '0768dc34fa625c8db5202dad057708ce'
         let adcode = ''
         let weather = ''
-        fetch('http://www.geoplugin.net/json.gp')
+        fetch('https://api.ipify.org?format=json')
             .then(response => {
                 response.json().then(parsedJson => {
-                    cip = parsedJson.geoplugin_request
+                    cip = parsedJson.ip
                     fetch('https://restapi.amap.com/v3/ip?key=' + ckey + '&type=4&ip=' + cip)
                         .then(response => {
                             response.json().then(parsedJson => {
