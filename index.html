@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>韩佳玥.我爱你</title>
+    <title>Document</title>
     <style>
         .back {
             position: fixed;
@@ -78,10 +78,10 @@
 
         .content {
             width: 80%;
+            margin: 0 auto;
             margin-top: 10%;
-            margin-left: 13%;
             line-height: 300%;
-            font-family:"Comic Sans MS","幼圆","黑体",sans-serif;
+            font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
         }
 
         .content:after {
@@ -172,7 +172,7 @@
                 jjien = +jjien + 1
             }
 
-            data = 'Dear 小韩,|  宝,今天是我们在一起的第' + Difference_In_Days + '天,|也是我们在一起的第' + jjien + '个' + jjie + '季,' + jjies + '|希望以后的日子里, 都能有你的陪伴.|  对了,今天的天气是' + weather
+            data = 'Dear 小韩,|    宝,今天是我们在一起的第' + Difference_In_Days + '天,也是我们在一起的第' + jjien + '个' + jjie + '季,' + jjies + '希望以后的日子里, 都能有你的陪伴.|    对了,今天的天气是' + weather
             if (index < data.length) {
                 if (data[index] == '|') {
                     dom.innerHTML += '<br>'
@@ -188,7 +188,7 @@
                     var date2 = new Date();
                     var Difference_In_Time = date2.getTime() - date1.getTime();
                     var Difference_In_Days = ((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24)).toFixed(7);
-                    data = 'Dear 小韩,|  宝,今天是我们在一起的第' + Difference_In_Days + '天,|也是我们在一起的第' + jjien + '个' + jjie + '季,' + jjies + '|希望以后的日子里, 都能有你的陪伴.|  对了,今天的天气是' + weather
+                    data = 'Dear 小韩,|    宝,今天是我们在一起的第' + Difference_In_Days + '天,也是我们在一起的第' + jjien + '个' + jjie + '季,' + jjies + '希望以后的日子里, 都能有你的陪伴.|    对了,今天的天气是' + weather
                     document.querySelector('.content').innerHTML = data.replaceAll('|', '<br>').replaceAll(' ', '&nbsp;')
                 }, 1000)
             }
