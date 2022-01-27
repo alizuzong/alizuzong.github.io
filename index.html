@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .back {
+            position: fixed;
+            padding: 0;
+            margin: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            animation-name: backdiv;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        .heart {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: pink;
+            height: 50px;
+            width: 50px;
+            transform: rotate(-45deg);
+            animation-name: beat;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        .heart:after {
+            background-color: pink;
+            content: "";
+            border-radius: 50%;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 0px;
+            left: 25px;
+        }
+
+        .heart:before {
+            background-color: pink;
+            content: "";
+            border-radius: 50%;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 0px;
+        }
+
+
+        @keyframes backdiv {
+            50% {
+                background: #ffe6f2;
+            }
+        }
+
+        @keyframes beat {
+            0% {
+                transform: scale(1) rotate(-45deg);
+            }
+
+            50% {
+                transform: scale(0.6) rotate(-45deg);
+            }
+        }
+
+        .content {
+            width: 80%;
+            margin-top: 10%;
+            margin-left: 13%;
+            line-height: 300%;
+            font-family:"Comic Sans MS","幼圆","黑体",sans-serif;
+        }
+
+        .content:after {
+            content: '|';
+            animation: blink 1s infinite
+        }
+
+        @keyframes blink {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back">
+        <div class="content"></div>
+    </div>
+    <div class="heart"></div>
+    <script src="https://api.myip.com"></script>
+    <script>
+
+        const dom = document.querySelector('.content')
+        var date1 = new Date("10/07/2019");
+
+        let cip = ''
+        let ckey = '0768dc34fa625c8db5202dad057708ce'
+        let adcode = ''
+        let weather = ''
+        fetch('http://www.geoplugin.net/json.gp')
+            .then(response => {
+                response.json().then(parsedJson => {
+                    cip = parsedJson.geoplugin_request
+                    fetch('https://restapi.amap.com/v3/ip?key=' + ckey + '&type=4&ip=' + cip)
+                        .then(response => {
+                            response.json().then(parsedJson => {
+                                adcode = parsedJson.adcode
+                                fetch('https://restapi.amap.com/v3/weather/weatherInfo?key=' + ckey + '&city=' + adcode)
+                                    .then(response => {
+                                        response.json().then(parsedJson => {
+                                            weather = parsedJson.lives[0]['weather']
+                                            if (weather.indexOf('晴') != -1) {
+                                                weather += ', 天气很好, 愿你的心情也很好!'
+                                            } else if (weather.indexOf('霾') != -1) { weather += ',记得戴口罩!' }
+                                            else if (weather.indexOf('雨') != -1) { weather += ',记得带伞!' }
+                                            else if (weather.indexOf('雾') != -1) { weather += ',路上注意安全!' }
+                                            else if (weather.indexOf('雪') != -1) { weather += ',别忘了堆雪人!' }
+                                            else if (weather.indexOf('风') != -1) { weather += ',别把宝, 吹跑了!' }
+                                            else {
+                                                weather += ', 这鬼天气, 注意安全!'
+                                            }
+                                            writing(0)
+                                        })
+                                    });
+                            })
+                        });
+                })
+            });
+
+
+        let index = 0
+        function writing(index) {
+
+            var date2 = new Date();
+            var Difference_In_Time = date2.getTime() - date1.getTime();
+            var Difference_In_Days = ((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24)).toFixed(7);
+            let jjie = '冬'
+            let jjies = 'xxx'
+            let jjien = (Difference_In_Time / (1000 * 3600 * 24 * 365)).toFixed(0)
+            if (date2.getMonth >= 3 || date2.getMonth <= 5) {
+                jjie = '春'
+                jjies = '早晚穿件外套,别着凉了,'
+            } else if (date2.getMonth >= 6 || date2.getMonth <= 8) {
+                jjie = '夏'
+                jjies = '别忘了做防晒哦'
+            } else if (date2.getMonth >= 6 || date2.getMonth <= 8) {
+                jjie = '秋'
+                jjies = '有多喝水吗?'
+                jjien = +jjien + 1
+            } else {
+                jjie = '冬'
+                jjies = '记得穿暖点哦,'
+                jjien = +jjien + 1
+            }
+
+            data = 'Dear 小韩,|  宝,今天是我们在一起的第' + Difference_In_Days + '天,|也是我们在一起的第' + jjien + '个' + jjie + '季,' + jjies + '|希望以后的日子里, 都能有你的陪伴.|  对了,今天的天气是' + weather
+            if (index < data.length) {
+                if (data[index] == '|') {
+                    dom.innerHTML += '<br>'
+                } else if (data[index] == ' ') {
+                    dom.innerHTML += '&nbsp;'
+                } else {
+                    dom.innerHTML += data[index]
+                }
+
+                setTimeout(writing.bind(this), 150, ++index)
+            } else {
+                setInterval(function () {
+                    var date2 = new Date();
+                    var Difference_In_Time = date2.getTime() - date1.getTime();
+                    var Difference_In_Days = ((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24)).toFixed(7);
+                    data = 'Dear 小韩,|  宝,今天是我们在一起的第' + Difference_In_Days + '天,|也是我们在一起的第' + jjien + '个' + jjie + '季,' + jjies + '|希望以后的日子里, 都能有你的陪伴.|  对了,今天的天气是' + weather
+                    document.querySelector('.content').innerHTML = data.replaceAll('|', '<br>').replaceAll(' ', '&nbsp;')
+                }, 1000)
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
