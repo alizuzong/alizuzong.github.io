@@ -116,7 +116,7 @@
         let ckey = '0768dc34fa625c8db5202dad057708ce'
         let adcode = ''
         let weather = ''
-        fetch('https://www.geoplugin.net/json.gp')
+        fetch('http://www.geoplugin.net/json.gp')
             .then(response => {
                 response.json().then(parsedJson => {
                     cip = parsedJson.geoplugin_request
